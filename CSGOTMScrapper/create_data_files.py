@@ -13,7 +13,6 @@ def generate_lists():
     page_counter = 0
 
     while items_data:
-        print(f"[INFO] Current data is: {data_lists.pistol_list}")
         print(f"[INFO] Scrapper is working! Parsing {page_counter} page!")
 
         json_data["variables"]["page"] = page_counter
