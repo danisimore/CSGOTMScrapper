@@ -1,6 +1,8 @@
 import json
+from json import JSONDecodeError
+
 import requests
-from config.request_cfg import headers, json_data, cookies
+from config.request_cfg import headers, json_data
 
 from config import data_lists
 
@@ -11,24 +13,26 @@ def generate_lists():
     page_counter = 0
 
     while items_data:
-
+        print(f"[INFO] Current data is: {data_lists.pistol_list}")
         print(f"[INFO] Scrapper is working! Parsing {page_counter} page!")
 
         json_data["variables"]["page"] = page_counter
         page_counter += 1
 
-        response = requests.post(
-            url='https://market.csgo.com/api/graphql',
-            cookies=cookies,
-            headers=headers,
-            json=json_data
-        ).json()
+        try:
+            response = requests.post(
+                url="https://market.csgo.com/api/graphql",
+                headers=headers,
+                json=json_data,
+            ).json()
+        except JSONDecodeError:
+            break
 
         items_data = response.get("data").get("items").get("data")
 
         if items_data:
             for item in items_data:
-                item_category = item.get('seo').get('category')
+                item_category = item.get("seo").get("category")
 
                 if item_category == "Pistol":
                     data_lists.pistol_list.append(
@@ -38,7 +42,7 @@ def generate_lists():
                             "currency": item.get("currency"),
                             "popularity": item.get("popularity"),
                             "quality": item.get("quality"),
-                            "rarity": item.get("rarity")
+                            "rarity": item.get("rarity"),
                         }
                     )
 
@@ -50,7 +54,7 @@ def generate_lists():
                             "currency": item.get("currency"),
                             "popularity": item.get("popularity"),
                             "quality": item.get("quality"),
-                            "rarity": item.get("rarity")
+                            "rarity": item.get("rarity"),
                         }
                     )
                 elif item_category == "Key":
@@ -60,7 +64,7 @@ def generate_lists():
                             "price": item.get("price"),
                             "currency": item.get("currency"),
                             "popularity": item.get("popularity"),
-                            "rarity": item.get("rarity")
+                            "rarity": item.get("rarity"),
                         }
                     )
                 elif item_category == "Gift":
@@ -70,7 +74,7 @@ def generate_lists():
                             "price": item.get("price"),
                             "currency": item.get("currency"),
                             "popularity": item.get("popularity"),
-                            "rarity": item.get("rarity")
+                            "rarity": item.get("rarity"),
                         }
                     )
                 elif item_category == "Sniper Rifle":
@@ -81,7 +85,7 @@ def generate_lists():
                             "currency": item.get("currency"),
                             "popularity": item.get("popularity"),
                             "quality": item.get("quality"),
-                            "rarity": item.get("rarity")
+                            "rarity": item.get("rarity"),
                         }
                     )
                 elif item_category == "Collectible":
@@ -91,7 +95,7 @@ def generate_lists():
                             "price": item.get("price"),
                             "currency": item.get("currency"),
                             "popularity": item.get("popularity"),
-                            "rarity": item.get("rarity")
+                            "rarity": item.get("rarity"),
                         }
                     )
                 elif item_category == "Pass":
@@ -101,7 +105,7 @@ def generate_lists():
                             "price": item.get("price"),
                             "currency": item.get("currency"),
                             "popularity": item.get("popularity"),
-                            "rarity": item.get("rarity")
+                            "rarity": item.get("rarity"),
                         }
                     )
                 elif item_category == "Knife":
@@ -112,7 +116,7 @@ def generate_lists():
                             "currency": item.get("currency"),
                             "popularity": item.get("popularity"),
                             "quality": item.get("quality"),
-                            "rarity": item.get("rarity")
+                            "rarity": item.get("rarity"),
                         }
                     )
                 elif item_category == "Rifle":
@@ -123,7 +127,7 @@ def generate_lists():
                             "currency": item.get("currency"),
                             "popularity": item.get("popularity"),
                             "quality": item.get("quality"),
-                            "rarity": item.get("rarity")
+                            "rarity": item.get("rarity"),
                         }
                     )
                 elif item_category == "Container":
@@ -133,7 +137,7 @@ def generate_lists():
                             "price": item.get("price"),
                             "currency": item.get("currency"),
                             "popularity": item.get("popularity"),
-                            "rarity": item.get("rarity")
+                            "rarity": item.get("rarity"),
                         }
                     )
                 elif item_category == "Sticker":
@@ -143,7 +147,7 @@ def generate_lists():
                             "price": item.get("price"),
                             "currency": item.get("currency"),
                             "popularity": item.get("popularity"),
-                            "rarity": item.get("rarity")
+                            "rarity": item.get("rarity"),
                         }
                     )
                 elif item_category == "Gloves":
@@ -154,7 +158,7 @@ def generate_lists():
                             "currency": item.get("currency"),
                             "popularity": item.get("popularity"),
                             "quality": item.get("quality"),
-                            "rarity": item.get("rarity")
+                            "rarity": item.get("rarity"),
                         }
                     )
                 elif item_category == "Shotgun":
@@ -165,7 +169,7 @@ def generate_lists():
                             "currency": item.get("currency"),
                             "popularity": item.get("popularity"),
                             "quality": item.get("quality"),
-                            "rarity": item.get("rarity")
+                            "rarity": item.get("rarity"),
                         }
                     )
                 elif item_category == "Music Kit":
@@ -175,7 +179,7 @@ def generate_lists():
                             "price": item.get("price"),
                             "currency": item.get("currency"),
                             "popularity": item.get("popularity"),
-                            "rarity": item.get("rarity")
+                            "rarity": item.get("rarity"),
                         }
                     )
                 elif item_category == "Agent":
@@ -185,13 +189,15 @@ def generate_lists():
                             "price": item.get("price"),
                             "currency": item.get("currency"),
                             "popularity": item.get("popularity"),
-                            "rarity": item.get("rarity")
+                            "rarity": item.get("rarity"),
                         }
                     )
 
 
 def record_files():
-    print("[INFO] A data from the pages has been successfully collected! Begin recording the data in files!")
+    print(
+        "[INFO] A data from the pages has been successfully collected! Begin recording the data in files!"
+    )
 
     with open("data/pistols_data.json", "w", encoding="utf-8") as file:
         json.dump(data_lists.pistol_list, file, indent=4, ensure_ascii=False)
